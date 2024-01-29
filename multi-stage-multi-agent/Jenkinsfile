@@ -23,7 +23,13 @@ pipeline {
       // Display Hello, World! using Node.js
       sh 'echo "console.log(\'Hello, World!\')" > app.js'
       sh 'cat app.js'  // Debugging: Print the content of app.js to console
-      sh 'node app.js'
+      def result = sh(script: 'node app.js', returnStatus: true)
+      
+      if (result == 0) {
+        echo 'Node.js script executed successfully.'
+      } else {
+        error 'Node.js script execution failed.'
+      }
       }
     }
   }
