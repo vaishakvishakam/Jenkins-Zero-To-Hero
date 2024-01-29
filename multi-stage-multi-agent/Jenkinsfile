@@ -14,13 +14,16 @@ pipeline {
         docker { image 'node:16-alpine' }
       }
       steps {
-         // Install any dependencies or run additional setup if needed
-          sh 'npm --version'
-          sh 'npm install'  // Example command to install dependencies, adjust as needed
-          
-          // Display Hello, World! using Node.js
-          sh 'echo "console.log(\'Hello, World!\')" > app.js'
-          sh 'node app.js'
+      sh 'node --version'
+      
+      // Install any dependencies or run additional setup if needed
+      sh 'npm --version'
+      sh 'npm install'  // Example command to install dependencies, adjust as needed
+      
+      // Display Hello, World! using Node.js
+      sh 'echo "console.log(\'Hello, World!\')" > app.js'
+      sh 'cat app.js'  // Debugging: Print the content of app.js to console
+      sh 'node app.js'
       }
     }
   }
