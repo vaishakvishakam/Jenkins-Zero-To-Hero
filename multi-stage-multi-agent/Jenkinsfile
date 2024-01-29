@@ -13,24 +13,28 @@ pipeline {
       agent {
         docker { image 'node:16-alpine' }
       }
-      steps {
-      sh 'apk add --update nodejs npm'
-      sh 'node --version'
-      
-      // Install any dependencies or run additional setup if needed
-      sh 'npm --version'
-      sh 'npm install'  // Example command to install dependencies, adjust as needed
-      
-      // Display Hello, World! using Node.js
-      sh 'echo "console.log(\'Hello, World!\')" > app.js'
-      sh 'cat app.js'  // Debugging: Print the content of app.js to console
-      def result = sh(script: 'node app.js', returnStatus: true)
-      
-      if (result == 0) {
+steps {
+    // Install Node.js
+    sh 'apk add --update nodejs npm'
+
+    // Verify Node.js and npm installation
+    sh 'node --version'
+    sh 'npm --version'
+
+    // Install any dependencies or run additional setup if needed
+    sh 'npm install'
+
+    // Display Hello, World! using Node.js
+    sh 'echo "console.log(\'Hello, World!\')" > app.js'
+    sh 'cat app.js'  // Debugging: Print the content of app.js to console
+    def result = sh(script: 'node app.js', returnStatus: true)
+
+    if (result == 0) {
         echo 'Node.js script executed successfully.'
-      } else {
+    } else {
         error 'Node.js script execution failed.'
-      }
+    }
+}
       
     }
   }
