@@ -30,7 +30,7 @@ pipeline {
       } else {
         error 'Node.js script execution failed.'
       }
-      }
+      
     }
   }
 }
