@@ -13,28 +13,47 @@ pipeline {
       agent {
         docker { image 'node:16-alpine' }
       }
-steps {
-    // Install Node.js
-    sh 'apk add --update nodejs npm'
+stage('Front-end') {
+    agent {
+        docker { image 'node:16-alpine' }
+    }
+    steps {
+        script {
+            // Enable debugging
+            sh 'set -x'
 
-    // Verify Node.js and npm installation
-    sh 'node --version'
-    sh 'npm --version'
+            // Check Node.js Version
+            sh 'node --version'
 
-    // Install any dependencies or run additional setup if needed
-    sh 'npm install'
+            // Install Node.js
+            sh 'apk add --update nodejs npm'
 
-    // Display Hello, World! using Node.js
-    sh 'echo "console.log(\'Hello, World!\')" > app.js'
-    sh 'cat app.js'  // Debugging: Print the content of app.js to console
-    def result = sh(script: 'node app.js', returnStatus: true)
+            // Verify Node.js and npm installation
+            sh 'node --version'
+            sh 'npm --version'
 
-    if (result == 0) {
-        echo 'Node.js script executed successfully.'
-    } else {
-        error 'Node.js script execution failed.'
+            // Install any dependencies or run additional setup if needed
+            sh 'npm install'  // Example command to install dependencies, adjust as needed
+
+            // Display Hello, World! using Node.js
+            sh 'echo "console.log(\'Hello, World!\')" > app.js'
+            sh 'cat app.js'  // Debugging: Print the content of app.js to console
+            def result = sh(script: 'node app.js', returnStatus: true)
+
+            // Disable debugging
+            sh 'set +x'
+
+            echo "Result: ${result}"
+
+            if (result == 0) {
+                echo 'Node.js script executed successfully.'
+            } else {
+                error 'Node.js script execution failed.'
+            }
+        }
     }
 }
+
       
     }
   }
